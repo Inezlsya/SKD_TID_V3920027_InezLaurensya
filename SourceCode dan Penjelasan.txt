@@ -1,0 +1,30 @@
+# menggunakan dua library yaitu gpio dan timeGPIO (General Purpose Input/Output) merupakan library yang digunakan untuk
+mengontrol GPIO Raspberry Pi menggunakan Python. GPIO merupakan pin atau tempat yang
+digunakan sebagai input dan output.
+from gpio import * 
+from time import *
+
+def handleSensorData(): #untuk membaca nilai yang dihasilkan sensor
+	value = digitalRead(0) # membaca input pada pin 0 (D0) kemudian disimpan di variabel value
+	if value == 0: jika value 0 maka sensor tidak mendeteksi adanya gerakan
+		customWrite(2, '0') #memberi informasi kepada output devaice. terdapat 2 parameter, dimana parameter pertama berada di pin 2 dan parameter kedua bernilai 0
+		customWrite(1, '0') #memberi informasi kepada output devaice. terdapat 2 parameter, dimana parameter pertama berada di pin 1 dan parameter kedua bernilai 0
+		digitalWrite(1, LOW) #Fungsi digitalWrite berguna untuk menyetel nilai pada pin 1 yang ditentukan low.Nilai ini akan terus ada, sampai nilai tersebut diubah lagi.
+		print("Tidak ada gerakan") #program akan menampilkan informasi "Tidak ada gerakan"
+	else:
+		customWrite(2, '1') #memberi informasi kepada output devaice. terdapat 2 parameter, dimana parameter pertama berada di pin 2 dan parameter kedua bernilai 1
+		customWrite(1, '1') #memberi informasi kepada output devaice. terdapat 2 parameter, dimana parameter pertama berada di pin 1 dan parameter kedua bernilai 1
+		digitalWrite(1, HIGH) #Fungsi digitalWrite berguna untuk menyetel nilai pada pin 1 yang ditentukan HIGH.Nilai ini akan terus ada, sampai nilai tersebut diubah lagi.
+		print("Ada gerakan") #program akan menampilkan informasi "Ada gerakan"
+		print("Garansi Terbuka") #program akan menampilkan informasi "Garansi Terbuka"
+		print("Lampu Menyala")  #program akan menampilkan informasi "Lampu Menyala"
+		
+def main():
+	add_event_detect(0, handleSensorData)
+	
+	while True:
+		delay(1000)
+		
+if __name__ == "__main__":
+	main()
+
